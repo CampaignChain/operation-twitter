@@ -1,0 +1,17 @@
+{
+    "name": "campaignchain/operation-twitter",
+    "description": "Collection of various Twitter operations.",
+    "keywords": ["twitter","operation"],
+    "type": "campaignchain-operation",
+    "homepage": "http://www.campaignchain.com",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Sandro Groganz",
+            "email": "sandro@campaignchain.com"
+        }
+    ],
+    "require": {
+        "guzzle/guzzle":"dev-master"
+    }
+}
