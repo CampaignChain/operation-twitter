@@ -13,5 +13,8 @@
     ],
     "require": {
         "guzzle/guzzle":"dev-master"
+    },
+    "autoload": {
+        "psr-4": { "CampaignChain\\Operation\\TwitterBundle\\": "" }
     }
 }
