@@ -8,6 +8,7 @@
 modules:
     campaignchain-twitter-update-status:
         display_name: 'Update Status'
-        owns_location: true
         services:
             job: campaignchain.operation.twitter.job.update_status
+        params:
+            owns_location: true
