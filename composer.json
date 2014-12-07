@@ -16,5 +16,14 @@
     },
     "autoload": {
         "psr-4": { "CampaignChain\\Operation\\TwitterBundle\\": "" }
+    },
+    "extra": {
+        "campaignchain": {
+            "kernel": {
+                "classes": [
+                    "CampaignChain\\Operation\\TwitterBundle\\CampaignChainOperationTwitterBundle"
+                ]
+            }
+        }
     }
 }
