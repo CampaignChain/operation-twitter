@@ -12,6 +12,7 @@
         }
     ],
     "require": {
+        "campaignchain/activity-twitter": "dev-1.0.0-alpha.3",
         "guzzle/guzzle":"dev-master"
     },
     "autoload": {
