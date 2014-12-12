@@ -1,0 +1,33 @@
+{#
+This file is part of the CampaignChain package.
+
+(c) Sandro Groganz <sandro@campaignchain.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% extends 'CampaignChainCoreBundle:Operation:read.html.twig' %}
+
+{% block operation %}
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group" aria-label="...">
+            <a href="{{ status.getUrl() }}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i> View on Twitter</a>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">Operation on <a href="https://www.twitter.com/{{ location_twitter.getUsername() }}">@{{ location_twitter.getUsername() }}</a> at {{ activity|campaignchain_tpl_trigger_hook_inline }}</div>
+        <div class="panel-body">
+        {% if tweet_is_protected %}
+            <p>{{ message }}</p>
+        {% else %}
+            {{ message|raw }}
+        {% endif %}
+        </div>
+    </div>
+    <div class="btn-toolbar" role="toolbar">
+        <div class="btn-group" role="group" aria-label="...">
+            <a href="{{ status.getUrl() }}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i> View on Twitter</a>
+        </div>
+    </div>
+{% endblock %}
