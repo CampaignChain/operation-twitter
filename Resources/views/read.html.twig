@@ -16,7 +16,7 @@ file that was distributed with this source code.
         </div>
     </div>
     <div class="panel panel-default">
-        <div class="panel-heading">Operation on <a href="https://www.twitter.com/{{ location_twitter.getUsername() }}">@{{ location_twitter.getUsername() }}</a> at {{ activity|campaignchain_tpl_trigger_hook_inline }}</div>
+        <div class="panel-heading">Status update on <a href="https://www.twitter.com/{{ location_twitter.getUsername() }}">@{{ location_twitter.getUsername() }}</a> at {{ activity|campaignchain_tpl_trigger_hook_inline }}</div>
         <div class="panel-body">
         {% if tweet_is_protected %}
             <p>{{ message }}</p>
