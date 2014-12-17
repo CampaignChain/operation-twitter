@@ -1,0 +1,25 @@
+{#
+This file is part of the CampaignChain package.
+
+(c) Sandro Groganz <sandro@campaignchain.com>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+
+{% block campaignchain_operation_twitter_update_status_widget %}
+    {% spaceless %}
+        {% stylesheets '@campaignchain_operation_twitter_css' %}
+        <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+        {% endstylesheets %}
+        <div id="campaignchain-operation-twitter-update-status">
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-twitter"></i></div>
+                <div class="panel-body">
+                    <p>What's happening?</p>
+                {{ form_row(form.message, { 'widget_col': 12}) }}
+                </div>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}

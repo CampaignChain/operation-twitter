@@ -42,7 +42,7 @@ class UpdateStatusOperationType extends AbstractType
         $builder
             ->add('message', 'textarea', array(
                 'property_path' => 'message',
-                'label' => 'Message',
+                'label' => false,
                 'attr' => array(
                     'placeholder' => 'Compose message...',
                     'max_length' => 140,

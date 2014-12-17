@@ -1,0 +1,11 @@
+assetic:
+    bundles:
+        - CampaignChainOperationTwitterBundle
+    assets:
+        campaignchain_operation_twitter_css:
+            inputs:
+                - '@CampaignChainOperationTwitterBundle/Resources/public/css/base.css'
+twig:
+    form:
+        resources:
+            - 'CampaignChainOperationTwitterBundle:Form:fields.html.twig'
