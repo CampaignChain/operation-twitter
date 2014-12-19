@@ -10,19 +10,25 @@ file that was distributed with this source code.
 {% extends 'CampaignChainCoreBundle:Operation:read.html.twig' %}
 
 {% block operation %}
+    {% stylesheets '@campaignchain_operation_twitter_css' %}
+    <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
+    {% endstylesheets %}
+
     <div class="btn-toolbar" role="toolbar">
         <div class="btn-group" role="group" aria-label="...">
             <a href="{{ status.getUrl() }}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i> View on Twitter</a>
         </div>
     </div>
-    <div class="panel panel-default">
-        <div class="panel-heading">Status update on <a href="https://www.twitter.com/{{ location_twitter.getUsername() }}">@{{ location_twitter.getUsername() }}</a> at {{ activity|campaignchain_tpl_trigger_hook_inline }}</div>
-        <div class="panel-body">
-        {% if tweet_is_protected %}
-            <p>{{ message }}</p>
-        {% else %}
-            {{ message|raw }}
-        {% endif %}
+    <div id="campaignchain-operation-twitter-update-status">
+        <div class="panel panel-default">
+            <div class="panel-heading"><i class="fa fa-twitter"></i></div>
+            <div class="panel-body">
+            {% if tweet_is_protected %}
+                <p>{{ message }}</p>
+            {% else %}
+                {{ message|raw }}
+            {% endif %}
+            </div>
         </div>
     </div>
     <div class="btn-toolbar" role="toolbar">

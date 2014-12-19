@@ -47,6 +47,14 @@ class Status extends Meta
     protected $url;
 
     /**
+     * The raw data of the published tweet as stored by Twitter upon
+     * publication.
+     *
+     * @ORM\Column(type="array", nullable=true)
+     */
+    protected $twitterData;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -123,6 +131,29 @@ class Status extends Meta
     public function getUrl()
     {
         return $this->url;
+    }
+
+    /**
+     * Set twitterData
+     *
+     * @param string $twitterData
+     * @return Status
+     */
+    public function setLinkedinData($twitterData)
+    {
+        $this->twitterData = $twitterData;
+
+        return $this;
+    }
+
+    /**
+     * Get twitterData
+     *
+     * @return string
+     */
+    public function getLinkedinData()
+    {
+        return $this->twitterData;
     }
 
     /**
