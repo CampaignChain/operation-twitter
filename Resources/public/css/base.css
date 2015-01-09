@@ -10,15 +10,11 @@ file that was distributed with this source code.
 #campaignchain-operation-twitter-update-status .panel-default > .panel-heading {
     background-color: #6dbcdb;
     color: #fff;
-    height: 41px;
+    height: 44px;
 }
 
 #campaignchain-operation-twitter-update-status .panel-default > .panel-heading a {
     color: #fff;
-}
-
-#campaignchain-operation-twitter-update-status .panel-default > .panel-heading .fa {
-    font-size: 22px;
 }
 
 #campaignchain-operation-twitter-update-status .panel-body {

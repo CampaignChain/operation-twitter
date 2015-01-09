@@ -15,6 +15,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\Form\FormView;
+use Symfony\Component\Form\FormInterface;
 
 class UpdateStatusOperationType extends AbstractType
 {
@@ -22,6 +24,7 @@ class UpdateStatusOperationType extends AbstractType
     private $view = 'default';
     protected $em;
     protected $container;
+    private $location;
 
     public function __construct(EntityManager $em, ContainerInterface $container)
     {
@@ -37,6 +40,10 @@ class UpdateStatusOperationType extends AbstractType
         $this->view = $view;
     }
 
+    public function setLocation($location){
+        $this->location = $location;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -48,6 +55,18 @@ class UpdateStatusOperationType extends AbstractType
                     'max_length' => 140,
                 ),
             ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+        if($this->location){
+            $view->vars['location'] = $this->location;
+        } else {
+            $view->vars['location'] = $options['data']->getOperation()->getActivity()->getLocation();
+        }
     }
 
     public function setDefaultOptions(OptionsResolverInterface $resolver)
