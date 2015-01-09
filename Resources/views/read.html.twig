@@ -21,9 +21,16 @@ file that was distributed with this source code.
     </div>
     <div id="campaignchain-operation-twitter-update-status">
         <div class="panel panel-default">
-            <div class="panel-heading"><i class="fa fa-twitter"></i></div>
+            <div class="panel-heading">
+                {% set location = status.getOperation().getActivity().getLocation() %}
+                <div class='campaignchain-medium-icon'>
+                    <img class='icon' src='{{ asset( location|campaignchain_medium_icon ) }}'/>
+                    <img class='context-icon' src='{{ asset( location|campaignchain_medium_context ) }}' style='background-image: url("{{ asset( location|campaignchain_medium_context ) }}");'/>
+                    <span class="text"><a href="{{ location.getUrl() }}" target="_blank">{{ location.getName() }}</a></span>
+                </div>
+            </div>
             <div class="panel-body">
-            {% if tweet_is_protected %}
+            {% if tweet_is_protected or tweet_not_accessible %}
                 <div class="status">{{ message|campaignchain_make_links|raw }}</div>
             {% else %}
                 {{ message|raw }}
