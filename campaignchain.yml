@@ -9,6 +9,11 @@ modules:
     campaignchain-twitter-update-status:
         display_name: 'Update Status'
         services:
-            job: campaignchain.operation.twitter.job.update_status
+            job: campaignchain.job.operation.twitter.update_status
+            report: campaignchain.job.report.twitter.update_status
         params:
             owns_location: true
+        metrics:
+            activity:
+                - "Retweet"
+                - "Favorites"

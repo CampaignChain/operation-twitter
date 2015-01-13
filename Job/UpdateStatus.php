@@ -13,10 +13,10 @@ namespace CampaignChain\Operation\TwitterBundle\Job;
 use CampaignChain\CoreBundle\Entity\Action;
 use Doctrine\ORM\EntityManager;
 use CampaignChain\CoreBundle\Entity\Medium;
-use CampaignChain\CoreBundle\Job\JobServiceInterface;
+use CampaignChain\CoreBundle\Job\JobOperationInterface;
 use Symfony\Component\HttpFoundation\Response;
 
-class UpdateStatus implements JobServiceInterface
+class UpdateStatus implements JobOperationInterface
 {
     protected $em;
     protected $container;
@@ -70,6 +70,10 @@ class UpdateStatus implements JobServiceInterface
         $location->setUrl($statusURL);
         $location->setName($status->getOperation()->getName());
         $location->setStatus(Medium::STATUS_ACTIVE);
+
+        // Schedule data collection for report
+        $report = $this->container->get('campaignchain.job.report.twitter.update_status');
+        $report->schedule($status->getOperation());
 
         $this->em->flush();
 

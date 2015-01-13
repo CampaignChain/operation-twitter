@@ -8,8 +8,11 @@
 parameters:
 
 services:
-    campaignchain.operation.twitter.job.update_status:
+    campaignchain.job.operation.twitter.update_status:
         class: CampaignChain\Operation\TwitterBundle\Job\UpdateStatus
+        arguments: [ @doctrine.orm.entity_manager, @service_container ]
+    campaignchain.job.report.twitter.update_status:
+        class: CampaignChain\Operation\TwitterBundle\Job\ReportUpdateStatus
         arguments: [ @doctrine.orm.entity_manager, @service_container ]
     campaignchain.operation.twitter.status:
             class: CampaignChain\Operation\TwitterBundle\EntityService\Status
