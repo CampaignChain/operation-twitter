@@ -52,7 +52,7 @@ class UpdateStatusOperationType extends AbstractType
                 'label' => false,
                 'attr' => array(
                     'placeholder' => 'Compose message...',
-                    'max_length' => 140,
+                    'maxlength' => 140,
                 ),
             ));
     }
