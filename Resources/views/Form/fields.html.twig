@@ -12,20 +12,9 @@ file that was distributed with this source code.
         {% stylesheets '@campaignchain_operation_twitter_css' %}
         <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
         {% endstylesheets %}
-        <div id="campaignchain-operation-twitter-update-status">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div class='campaignchain-medium-icon'>
-                        <img class='icon' src='{{ asset( form.vars.location|campaignchain_medium_icon ) }}'/>
-                        <img class='context-icon' src='{{ asset( form.vars.location|campaignchain_medium_context ) }}' style='background-image: url("{{ asset( form.vars.location|campaignchain_medium_context ) }}");'/>
-                        <span class="text"><a href="{{ form.vars.location.getUrl() }}" target="_blank">{{ form.vars.location.getName() }}</a></span>
-                    </div>
-                </div>
-                <div class="panel-body">
-                    <p>What's happening?</p>
-                {{ form_row(form.message, { 'widget_col': 12}) }}
-                </div>
-            </div>
-        </div>
+        {% include 'CampaignChainCoreBundle:Operation:field_header.html.twig' %}
+            <p>What's happening?</p>
+            {{ form_row(form.message, { 'widget_col': 12}) }}
+        {% include 'CampaignChainCoreBundle:Operation:field_footer.html.twig' %}
     {% endspaceless %}
 {% endblock %}

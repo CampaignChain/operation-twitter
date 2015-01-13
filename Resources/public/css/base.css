@@ -7,21 +7,21 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 */
 
-#campaignchain-operation-twitter-update-status .panel-default > .panel-heading {
+#campaignchain-operation-field .panel-default > .panel-heading {
     background-color: #6dbcdb;
     color: #fff;
     height: 44px;
 }
 
-#campaignchain-operation-twitter-update-status .panel-default > .panel-heading a {
+#campaignchain-operation-field .panel-default > .panel-heading a {
     color: #fff;
 }
 
-#campaignchain-operation-twitter-update-status .panel-body {
+#campaignchain-operation-field .panel-body {
     background-color: #f8f8f8;
 }
 
-#campaignchain-operation-twitter-update-status .panel-body .status {
+#campaignchain-operation-field .panel-body .status {
     display: block;
     max-width: 99%;
     min-width: 220px;
