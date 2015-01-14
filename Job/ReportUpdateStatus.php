@@ -17,8 +17,9 @@ use Doctrine\ORM\EntityManager;
 
 class ReportUpdateStatus implements JobReportInterface
 {
-    const METRIC_NAME_RT = 'Retweets';
-    const METRIC_NAME_FAV = 'Favorites';
+    const BUNDLE_NAME = 'campaignchain/operation-twitter';
+    const METRIC_RTS = 'Retweets';
+    const METRIC_FAVS = 'Favorites';
 
     protected $em;
     protected $container;
@@ -43,13 +44,20 @@ class ReportUpdateStatus implements JobReportInterface
 
         // Add initial data to report.
         $this->status = $this->em->getRepository('CampaignChainOperationTwitterBundle:Status')->findOneByOperation($operation);
-        $this->setReportData(0, 0);
+        if (!$this->status) {
+            throw new \Exception('No status message found for an operation with ID: '.$operation->getId());
+        }
+
+        $facts[self::METRIC_RTS] = 0;
+        $facts[self::METRIC_FAVS] = 0;
+
+        $factService = $this->container->get('campaignchain.core.fact');
+        $factService->addFacts('activity', self::BUNDLE_NAME, $operation, $facts);
     }
 
     public function execute($operationId)
     {
         $this->status = $this->em->getRepository('CampaignChainOperationTwitterBundle:Status')->findOneByOperation($operationId);
-
         if (!$this->status) {
             throw new \Exception('No status message found for an operation with ID: '.$operationId);
         }
@@ -71,7 +79,11 @@ class ReportUpdateStatus implements JobReportInterface
         }
 
         // Add report data.
-        $this->setReportData($retweets, $favorites);
+        $facts[self::METRIC_RTS] = $retweets;
+        $facts[self::METRIC_FAVS] = $favorites;
+
+        $factService = $this->container->get('campaignchain.core.fact');
+        $factService->addFacts('activity', self::BUNDLE_NAME, $this->status->getOperation(), $facts);
 
         $this->message = 'Added to report: retweets = '.$retweets.', favorites = '.$favorites.'';
 
@@ -80,34 +92,5 @@ class ReportUpdateStatus implements JobReportInterface
 
     public function getMessage(){
         return $this->message;
-    }
-
-    public function setReportData($retweets, $favorites)
-    {
-        // Get metrics object.
-        $metricRt = $this->em->getRepository('CampaignChainCoreBundle:ReportAnalyticsActivityMetric')->findOneByName(self::METRIC_NAME_RT);
-
-        // Create new facts entry for retweets.
-        $factRt = new ReportAnalyticsActivityFact();
-        $factRt->setMetric($metricRt);
-        $factRt->setOperation($this->status->getOperation());
-        $factRt->setActivity($this->status->getOperation()->getActivity());
-        $factRt->setCampaign($this->status->getOperation()->getActivity()->getCampaign());
-        $factRt->setTime(new \DateTime('now', new \DateTimeZone('UTC')));
-        $factRt->setValue($retweets);
-        $this->em->persist($factRt);
-
-        // Get metrics object.
-        $metricFav = $this->em->getRepository('CampaignChainCoreBundle:ReportAnalyticsActivityMetric')->findOneByName(self::METRIC_NAME_FAV);
-
-        // Create new facts entry for favorites.
-        $factFav = new ReportAnalyticsActivityFact();
-        $factFav->setMetric($metricFav);
-        $factFav->setOperation($this->status->getOperation());
-        $factFav->setActivity($this->status->getOperation()->getActivity());
-        $factFav->setCampaign($this->status->getOperation()->getActivity()->getCampaign());
-        $factFav->setTime(new \DateTime('now', new \DateTimeZone('UTC')));
-        $factFav->setValue($favorites);
-        $this->em->persist($factFav);
     }
 }
