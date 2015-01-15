@@ -15,5 +15,5 @@ modules:
             owns_location: true
         metrics:
             activity:
-                - "Retweet"
+                - "Retweets"
                 - "Favorites"
