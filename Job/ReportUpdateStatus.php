@@ -34,7 +34,7 @@ class ReportUpdateStatus implements JobReportInterface
         $this->container = $container;
     }
 
-    public function schedule($operation)
+    public function schedule($operation, $facts = null)
     {
         $scheduler = new SchedulerReportOperation();
         $scheduler->setOperation($operation);
