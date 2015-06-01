@@ -11,8 +11,10 @@
 namespace CampaignChain\Operation\TwitterBundle\EntityService;
 
 use Doctrine\ORM\EntityManager;
+use CampaignChain\CoreBundle\EntityService\OperationServiceInterface;
+use CampaignChain\CoreBundle\Entity\Operation;
 
-class Status
+class Status implements OperationServiceInterface
 {
     protected $em;
 
@@ -32,5 +34,14 @@ class Status
         }
 
         return $status;
+    }
+
+    public function cloneOperation(Operation $oldOperation, Operation $newOperation)
+    {
+        $status = $this->getStatusByOperation($oldOperation);
+        $clonedStatus = clone $status;
+        $clonedStatus->setOperation($newOperation);
+        $this->em->persist($clonedStatus);
+        $this->em->flush();
     }
 }

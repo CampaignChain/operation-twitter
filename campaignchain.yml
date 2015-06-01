@@ -9,6 +9,7 @@ modules:
     campaignchain-twitter-update-status:
         display_name: 'Update Status'
         services:
+            operation: campaignchain.operation.twitter.status
             job: campaignchain.job.operation.twitter.update_status
             report: campaignchain.job.report.twitter.update_status
         params:
