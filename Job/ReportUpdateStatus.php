@@ -14,6 +14,7 @@ use CampaignChain\CoreBundle\Entity\ReportAnalyticsActivityFact;
 use CampaignChain\CoreBundle\Entity\SchedulerReportOperation;
 use CampaignChain\CoreBundle\Job\JobReportInterface;
 use Doctrine\ORM\EntityManager;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ReportUpdateStatus implements JobReportInterface
 {
@@ -28,7 +29,7 @@ class ReportUpdateStatus implements JobReportInterface
 
     protected $status;
 
-    public function __construct(EntityManager $em, $container)
+    public function __construct(EntityManager $em, ContainerInterface $container)
     {
         $this->em = $em;
         $this->container = $container;

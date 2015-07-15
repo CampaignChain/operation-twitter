@@ -13,17 +13,17 @@ namespace CampaignChain\Operation\TwitterBundle\Job;
 use CampaignChain\CoreBundle\Entity\Action;
 use Doctrine\ORM\EntityManager;
 use CampaignChain\CoreBundle\Entity\Medium;
-use CampaignChain\CoreBundle\Job\JobOperationInterface;
-use Symfony\Component\HttpFoundation\Response;
+use CampaignChain\CoreBundle\Job\JobActionInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
-class UpdateStatus implements JobOperationInterface
+class UpdateStatus implements JobActionInterface
 {
     protected $em;
     protected $container;
 
     protected $message;
 
-    public function __construct(EntityManager $em, $container)
+    public function __construct(EntityManager $em, ContainerInterface $container)
     {
         $this->em = $em;
         $this->container = $container;
