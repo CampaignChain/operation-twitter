@@ -1,7 +1,7 @@
 {
     "name": "campaignchain/operation-twitter",
     "description": "Collection of various Twitter operations.",
-    "keywords": ["twitter","operation"],
+    "keywords": ["twitter","operation","campaignchain"],
     "type": "campaignchain-operation",
     "homepage": "http://www.campaignchain.com",
     "license": "Apache-2.0",
