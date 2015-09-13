@@ -1,6 +1,6 @@
 {
     "name": "campaignchain/operation-twitter",
-    "description": "Collection of various Twitter operations.",
+    "description": "Collection of various Twitter operations (e.g. post a Tweet).",
     "keywords": ["twitter","operation","campaignchain"],
     "type": "campaignchain-operation",
     "homepage": "http://www.campaignchain.com",
