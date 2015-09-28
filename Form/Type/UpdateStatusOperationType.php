@@ -32,7 +32,7 @@ class UpdateStatusOperationType extends AbstractType
         $this->container = $container;
     }
 
-    public function setStatus($status){
+    public function setOperationDetail($status){
         $this->status = $status;
     }
 
