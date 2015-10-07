@@ -35,8 +35,8 @@ class UpdateStatusOperationType extends OperationType
             'data_class' => 'CampaignChain\Operation\TwitterBundle\Entity\Status',
         );
 
-        if($this->operationDetail){
-            $defaults['data'] = $this->operationDetail;
+        if($this->content){
+            $defaults['data'] = $this->content;
         }
         $resolver->setDefaults($defaults);
     }
