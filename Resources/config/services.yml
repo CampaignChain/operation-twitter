@@ -6,6 +6,10 @@
 # file that was distributed with this source code.
 
 parameters:
+    campaignchain.operation.twitter.update_status:
+        bundle_name: "campaignchain/operation-twitter"
+        module_identifier: "campaignchain-twitter-update-status"
+        form_type: "CampaignChain\\Operation\\TwitterBundle\\Form\\Type\\UpdateStatusOperationType"
 
 services:
     campaignchain.job.operation.twitter.update_status:
