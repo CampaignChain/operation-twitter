@@ -12,6 +12,7 @@ namespace CampaignChain\Operation\TwitterBundle\Entity;
 
 use CampaignChain\CoreBundle\Entity\Meta;
 use Doctrine\ORM\Mapping as ORM;
+use CampaignChain\CoreBundle\Util\ParserUtil;
 
 /**
  * @ORM\Entity
@@ -118,7 +119,7 @@ class Status extends Meta
      */
     public function setUrl($url)
     {
-        $this->url = $url;
+        $this->url = ParserUtil::sanitizeUrl($url);
 
         return $this;
     }
