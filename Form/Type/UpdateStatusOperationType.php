@@ -24,7 +24,7 @@ class UpdateStatusOperationType extends OperationType
                 'label' => false,
                 'attr' => array(
                     'placeholder' => 'Compose message...',
-                    'maxlength' => 140,
+                    'maxlength_soft' => 140,
                 ),
             ));
     }
