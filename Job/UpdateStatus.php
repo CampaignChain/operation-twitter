@@ -47,10 +47,17 @@ class UpdateStatus implements JobActionInterface
         $client = $this->container->get('campaignchain.channel.twitter.rest.client');
         $connection = $client->connectByActivity($status->getOperation()->getActivity());
 
-        $request = $connection->post('statuses/update.json', null, array(
-                'status' => $status->getMessage(),
-            )
-        );
+        $params['status'] = $status->getMessage();
+
+        /*
+         * @TODO
+         *
+         * If there are URLs in the tweet, they have been shortened. Thus, we'll
+         * pass the expanded URLs as entities in the API call, so that Twitter
+         * can display them when hovering the mouse on a short URL.
+         */
+
+        $request = $connection->post('statuses/update.json', null, $params);
         $response = $request->send()->json();
 
         // TODO
