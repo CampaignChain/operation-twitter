@@ -11,9 +11,11 @@
 namespace CampaignChain\Operation\TwitterBundle\Job;
 
 use CampaignChain\CoreBundle\Entity\Action;
+use CampaignChain\Operation\TwitterBundle\Entity\Status;
 use Doctrine\ORM\EntityManager;
 use CampaignChain\CoreBundle\Entity\Medium;
 use CampaignChain\CoreBundle\Job\JobActionInterface;
+use Guzzle\Http\Client;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class UpdateStatus implements JobActionInterface
@@ -31,6 +33,7 @@ class UpdateStatus implements JobActionInterface
 
     public function execute($operationId)
     {
+        /** @var Status $status */
         $status = $this->em->getRepository('CampaignChainOperationTwitterBundle:Status')->findOneByOperation($operationId);
 
         if (!$status) {
@@ -45,9 +48,37 @@ class UpdateStatus implements JobActionInterface
         );
 
         $client = $this->container->get('campaignchain.channel.twitter.rest.client');
+        /** @var Client $connection */
         $connection = $client->connectByActivity($status->getOperation()->getActivity());
 
         $params['status'] = $status->getMessage();
+
+        //have images?
+        $images = $this->em
+            ->getRepository('CampaignChainHookImageBundle:Image')
+            ->getImagesForOperation($status->getOperation());
+
+        $mediaIds = [];
+
+        if ($images) {
+            foreach ($images as $image) {
+                $streamPath = 'gaufrette://images/'.$image->getPath();
+
+                $imageRequest = $connection->post('https://upload.twitter.com/1.1/media/upload.json', null, [
+                    'media_data' => base64_encode(file_get_contents($streamPath)),
+                ]);
+
+                try {
+                    $response = $imageRequest->send()->json();
+                    $mediaIds[] = $response['media_id'];
+                } catch (\Exception $e) {
+                }
+            }
+
+            if ($mediaIds) {
+                $params['media_ids'] = implode(',', $mediaIds);
+            }
+        }
 
         /*
          * @TODO
