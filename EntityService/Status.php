@@ -30,6 +30,17 @@ class Status implements OperationServiceInterface
         $this->em = $em;
     }
 
+    public function getContent(Operation $operation)
+    {
+        return $this->getStatusByOperation($operation->getId());
+    }
+
+    /**
+     * @param $id
+     * @return mixed
+     * @throws \Exception
+     * @deprecated Use getContent(Operation $operation) instead.
+     */
     public function getStatusByOperation($id){
         $status = $this->em->getRepository('CampaignChainOperationTwitterBundle:Status')
             ->findOneByOperation($id);
