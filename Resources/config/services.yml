@@ -17,6 +17,7 @@ parameters:
         bundle_name: "campaignchain/operation-twitter"
         module_identifier: "campaignchain-twitter-update-status"
         form_type: "CampaignChain\\Operation\\TwitterBundle\\Form\\Type\\UpdateStatusOperationType"
+        validator: "campaignchain.validator.operation.twitter.update_status"
 
 services:
     campaignchain.job.operation.twitter.update_status:
@@ -28,3 +29,11 @@ services:
     campaignchain.operation.twitter.status:
             class: CampaignChain\Operation\TwitterBundle\EntityService\Status
             arguments: [ @doctrine.orm.entity_manager ]
+    campaignchain.validator.operation.twitter.update_status:
+        class: CampaignChain\Operation\TwitterBundle\Validator\UpdateStatus
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@campaignchain.channel.twitter.rest.client"
+            - "%campaignchain_channel_twitter.max_duplicate_interval%"
+            - "@campaignchain.core.util.scheduler"
+            - "@router"

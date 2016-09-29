@@ -19,6 +19,7 @@ modules:
             operation: campaignchain.operation.twitter.status
             job: campaignchain.job.operation.twitter.update_status
             report: campaignchain.job.report.twitter.update_status
+            validator: campaignchain.validator.operation.twitter.update_status
         params:
             owns_location: true
         metrics:
