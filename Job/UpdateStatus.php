@@ -17,25 +17,63 @@
 
 namespace CampaignChain\Operation\TwitterBundle\Job;
 
+use CampaignChain\Channel\TwitterBundle\REST\TwitterClient;
 use CampaignChain\CoreBundle\Entity\Action;
+use CampaignChain\CoreBundle\EntityService\CTAService;
 use CampaignChain\Operation\TwitterBundle\Entity\Status;
 use Doctrine\ORM\EntityManager;
 use CampaignChain\CoreBundle\Entity\Medium;
 use CampaignChain\CoreBundle\Job\JobActionInterface;
 use Guzzle\Http\Client;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use CampaignChain\Operation\TwitterBundle\Validator\UpdateStatus as Validator;
+use CampaignChain\CoreBundle\Exception\JobException;
+use CampaignChain\CoreBundle\Exception\ErrorCode;
 
 class UpdateStatus implements JobActionInterface
 {
+    /**
+     * @var EntityManager
+     */
     protected $em;
-    protected $container;
 
+    /**
+     * @var CTAService
+     */
+    protected $cta;
+
+    /**
+     * @var TwitterClient
+     */
+    protected $client;
+
+    /**
+     * @var ReportUpdateStatus
+     */
+    protected $report;
+
+    /**
+     * @var string
+     */
     protected $message;
 
-    public function __construct(EntityManager $em, ContainerInterface $container)
+    /**
+     * @var Validator
+     */
+    protected $validator;
+
+    public function __construct(
+        EntityManager $em,
+        CTAService $cta,
+        TwitterClient $client,
+        ReportUpdateStatus $report,
+        Validator $validator
+)
     {
         $this->em = $em;
-        $this->container = $container;
+        $this->cta = $cta;
+        $this->client = $client;
+        $this->report = $report;
+        $this->validator = $validator;
     }
 
     public function execute($operationId)
@@ -47,16 +85,20 @@ class UpdateStatus implements JobActionInterface
             throw new \Exception('No status message found for an operation with ID: '.$operationId);
         }
 
+        // Check whether the message can be posted in the Location.
+        $isExecutable = $this->validator->isExecutableByLocation($status, $status->getOperation()->getStartDate());
+        if($isExecutable['status'] == false){
+            throw new JobException($isExecutable['message'], ErrorCode::OPERATION_NOT_EXECUTABLE_IN_LOCATION);
+        }
+
         // Process URLs in message and save the new message text, now including
         // the replaced URLs with the Tracking ID attached for call to action tracking.
-        $ctaService = $this->container->get('campaignchain.core.cta');
         $status->setMessage(
-            $ctaService->processCTAs($status->getMessage(), $status->getOperation(), 'txt')->getContent()
+            $this->cta->processCTAs($status->getMessage(), $status->getOperation(), 'txt')->getContent()
         );
 
-        $client = $this->container->get('campaignchain.channel.twitter.rest.client');
         /** @var Client $connection */
-        $connection = $client->connectByActivity($status->getOperation()->getActivity());
+        $connection = $this->client->connectByActivity($status->getOperation()->getActivity());
 
         $params['status'] = $status->getMessage();
 
@@ -117,8 +159,7 @@ class UpdateStatus implements JobActionInterface
         $location->setStatus(Medium::STATUS_ACTIVE);
 
         // Schedule data collection for report
-        $report = $this->container->get('campaignchain.job.report.twitter.update_status');
-        $report->schedule($status->getOperation());
+        $this->report->schedule($status->getOperation());
 
         $this->em->flush();
 

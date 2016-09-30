@@ -75,7 +75,7 @@ class UpdateStatus extends AbstractOperationValidator
      * @param \DateTime $startDate
      * @return array
      */
-    public function isExecutableByChannel($content, \DateTime $startDate)
+    public function isExecutableByLocation($content, \DateTime $startDate)
     {
         /*
          * If message contains no links, find out whether it has been posted before.
@@ -228,6 +228,6 @@ class UpdateStatus extends AbstractOperationValidator
      */
     public function isExecutableByScheduler($content, \DateTime $startDate)
     {
-        return $this->isExecutableByChannel($content, $startDate);
+        return $this->isExecutableByLocation($content, $startDate);
     }
 }

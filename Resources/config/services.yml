@@ -22,7 +22,12 @@ parameters:
 services:
     campaignchain.job.operation.twitter.update_status:
         class: CampaignChain\Operation\TwitterBundle\Job\UpdateStatus
-        arguments: [ @doctrine.orm.entity_manager, @service_container ]
+        arguments:
+            - "@doctrine.orm.entity_manager"
+            - "@campaignchain.core.cta"
+            - "@campaignchain.channel.twitter.rest.client"
+            - "@campaignchain.job.report.twitter.update_status"
+            - "@campaignchain.validator.operation.twitter.update_status"
     campaignchain.job.report.twitter.update_status:
         class: CampaignChain\Operation\TwitterBundle\Job\ReportUpdateStatus
         arguments: [ @doctrine.orm.entity_manager, @service_container ]
