@@ -35,7 +35,7 @@ services:
             class: CampaignChain\Operation\TwitterBundle\EntityService\Status
             arguments: [ @doctrine.orm.entity_manager ]
     campaignchain.validator.operation.twitter.update_status:
-        class: CampaignChain\Operation\TwitterBundle\Validator\UpdateStatus
+        class: CampaignChain\Operation\TwitterBundle\Validator\UpdateStatusValidator
         arguments:
             - "@doctrine.orm.entity_manager"
             - "@campaignchain.channel.twitter.rest.client"

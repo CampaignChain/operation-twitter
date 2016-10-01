@@ -28,7 +28,7 @@ use CampaignChain\Operation\TwitterBundle\Entity\Status;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
-class UpdateStatus extends AbstractOperationValidator
+class UpdateStatusValidator extends AbstractOperationValidator
 {
     protected $em;
     protected $restClient;

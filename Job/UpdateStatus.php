@@ -25,7 +25,7 @@ use Doctrine\ORM\EntityManager;
 use CampaignChain\CoreBundle\Entity\Medium;
 use CampaignChain\CoreBundle\Job\JobActionInterface;
 use Guzzle\Http\Client;
-use CampaignChain\Operation\TwitterBundle\Validator\UpdateStatus as Validator;
+use CampaignChain\Operation\TwitterBundle\Validator\UpdateStatusValidator as Validator;
 use CampaignChain\CoreBundle\Exception\JobException;
 use CampaignChain\CoreBundle\Exception\ErrorCode;
 
