@@ -91,10 +91,28 @@ class UpdateStatus implements JobActionInterface
             throw new JobException($isExecutable['message'], ErrorCode::OPERATION_NOT_EXECUTABLE_IN_LOCATION);
         }
 
-        // Process URLs in message and save the new message text, now including
-        // the replaced URLs with the Tracking ID attached for call to action tracking.
+        /*
+         * If it is a campaign or parent campaign with an interval (e.g.
+         * repeating campaign), we make sure that every URL will be shortened to
+         * avoid a duplicate status message error.
+         */
+        $options = array();
+        if(
+            $status->getOperation()->getActivity()->getCampaign()->getInterval() ||
+            (
+                $status->getOperation()->getActivity()->getCampaign()->getParent() &&
+                $status->getOperation()->getActivity()->getCampaign()->getParent()->getInterval()
+            )
+        ){
+            $options['shorten_all_unique'] = true;
+        }
+        
+        /*
+         * Process URLs in message and save the new message text, now including
+         * the replaced URLs with the Tracking ID attached for call to action tracking.
+         */
         $status->setMessage(
-            $this->cta->processCTAs($status->getMessage(), $status->getOperation(), 'txt')->getContent()
+            $this->cta->processCTAs($status->getMessage(), $status->getOperation(), $options)->getContent()
         );
 
         /** @var Client $connection */
