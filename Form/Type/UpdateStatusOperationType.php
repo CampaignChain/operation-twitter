@@ -17,6 +17,7 @@
 
 namespace CampaignChain\Operation\TwitterBundle\Form\Type;
 
+use CampaignChain\AutocompleteFormTypeBundle\Form\Type\AutocompleteType;
 use CampaignChain\CoreBundle\Form\Type\OperationType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -26,7 +27,7 @@ class UpdateStatusOperationType extends OperationType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('message', 'textarea', array(
+            ->add('message', AutocompleteType::class, array(
                 'property_path' => 'message',
                 'label' => false,
                 'attr' => array(
