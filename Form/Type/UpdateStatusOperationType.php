@@ -34,6 +34,12 @@ class UpdateStatusOperationType extends OperationType
                     'placeholder' => 'Compose message...',
                     'maxlength_soft' => 140
                 ),
+                'campaignchain_autocomplete' => array(
+                    '@' => array(
+                        'endpoint' => '/api/v1/p/campaignchain/channel-twitter/users/search',
+                        'location' => $this->location->getId(),
+                    )
+                )
             ));
     }
 
