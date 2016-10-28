@@ -36,7 +36,7 @@ class UpdateStatusOperationType extends OperationType
                 ),
                 'campaignchain_autocomplete' => array(
                     '@' => array(
-                        'endpoint' => '/api/v1/p/campaignchain/channel-twitter/users/search',
+                        'endpoint' => '/api/private/p/campaignchain/channel-twitter/users/search',
                         'location' => $this->location->getId(),
                     )
                 )
