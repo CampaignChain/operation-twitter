@@ -23,21 +23,21 @@ services:
     campaignchain.job.operation.twitter.update_status:
         class: CampaignChain\Operation\TwitterBundle\Job\UpdateStatus
         arguments:
-            - "@doctrine.orm.entity_manager"
+            - "@doctrine"
             - "@campaignchain.core.cta"
             - "@campaignchain.channel.twitter.rest.client"
             - "@campaignchain.job.report.twitter.update_status"
             - "@campaignchain.validator.operation.twitter.update_status"
     campaignchain.job.report.twitter.update_status:
         class: CampaignChain\Operation\TwitterBundle\Job\ReportUpdateStatus
-        arguments: [ @doctrine.orm.entity_manager, @service_container ]
+        arguments: [ @doctrine, @service_container ]
     campaignchain.operation.twitter.status:
             class: CampaignChain\Operation\TwitterBundle\EntityService\Status
-            arguments: [ @doctrine.orm.entity_manager ]
+            arguments: [ @doctrine ]
     campaignchain.validator.operation.twitter.update_status:
         class: CampaignChain\Operation\TwitterBundle\Validator\UpdateStatusValidator
         arguments:
-            - "@doctrine.orm.entity_manager"
+            - "@doctrine"
             - "@campaignchain.channel.twitter.rest.client"
             - "%campaignchain_channel_twitter.max_duplicate_interval%"
             - "@campaignchain.core.util.scheduler"

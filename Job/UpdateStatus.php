@@ -21,7 +21,7 @@ use CampaignChain\Channel\TwitterBundle\REST\TwitterClient;
 use CampaignChain\CoreBundle\Entity\Action;
 use CampaignChain\CoreBundle\EntityService\CTAService;
 use CampaignChain\Operation\TwitterBundle\Entity\Status;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use CampaignChain\CoreBundle\Entity\Medium;
 use CampaignChain\CoreBundle\Job\JobActionInterface;
 use Guzzle\Http\Client;
@@ -32,7 +32,7 @@ use CampaignChain\CoreBundle\Exception\ErrorCode;
 class UpdateStatus implements JobActionInterface
 {
     /**
-     * @var EntityManager
+     * @var Registry
      */
     protected $em;
 
@@ -62,14 +62,14 @@ class UpdateStatus implements JobActionInterface
     protected $validator;
 
     public function __construct(
-        EntityManager $em,
+        ManagerRegistry $managerRegistry,
         CTAService $cta,
         TwitterClient $client,
         ReportUpdateStatus $report,
         Validator $validator
 )
     {
-        $this->em = $em;
+        $this->em = $managerRegistry->getManager();
         $this->cta = $cta;
         $this->client = $client;
         $this->report = $report;
