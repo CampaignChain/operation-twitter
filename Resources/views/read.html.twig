@@ -22,26 +22,36 @@ limitations under the License.
     <link href="{{ asset_url }}" type="text/css" rel="stylesheet" />
     {% endstylesheets %}
 
-    {% include 'CampaignChainCoreBundle:Operation:field_header.html.twig' %}
-        {% if tweet_is_protected or tweet_not_accessible %}
-            <div class="status">{{ message|campaignchain_make_links|raw }}</div>
-        {% else %}
-            {{ message|raw }}
-        {% endif %}
-    {% include 'CampaignChainCoreBundle:Operation:field_footer.html.twig' %}
-
-    <div class="btn-toolbar" role="toolbar">
-        <div class="btn-group" role="group" aria-label="...">
-            <a href="{{ status.getUrl() }}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i> View on Twitter</a>
-        </div>
-    </div>
+    {% embed 'AvanzuAdminThemeBundle:Widgets:box-widget.html.twig' %}
+        {% block box_body %}
+            {% include 'CampaignChainCoreBundle:Operation:field_header.html.twig' %}
+                {% if tweet_is_protected or tweet_not_accessible %}
+                    <div class="status">{{ message|campaignchain_make_links|raw }}</div>
+                {% else %}
+                    {{ message|raw }}
+                {% endif %}
+            {% include 'CampaignChainCoreBundle:Operation:field_footer.html.twig' %}
+        {% endblock %}
+        {% block box_footer %}
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group" role="group" aria-label="...">
+                    <a href="{{ status.getUrl() }}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i> View on Twitter</a>
+                </div>
+            </div>
+        {% endblock %}
+    {% endembed %}
 
 {% endblock %}
 
 {% block sidebar_operation %}
-    {% if tweet_is_protected %}
-        <p><i class="fa fa-lock"></i> Protected</p>
-    {% else %}
-        <p><i class="fa fa-globe"></i> Public</p>
-    {% endif %}
+    {% embed 'AvanzuAdminThemeBundle:Widgets:box-widget.html.twig' %}
+        {% block box_title %}Visibility on Twitter{% endblock %}
+        {% block box_body %}
+            {% if tweet_is_protected %}
+                <p><i class="fa fa-lock"></i> Protected</p>
+            {% else %}
+                <p><i class="fa fa-globe"></i> Public</p>
+            {% endif %}
+        {% endblock %}
+    {% endembed %}
 {% endblock %}
