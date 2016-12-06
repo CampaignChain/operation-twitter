@@ -118,6 +118,13 @@ class UpdateStatus implements JobActionInterface
         /** @var Client $connection */
         $connection = $this->client->connectByActivity($status->getOperation()->getActivity());
 
+        /*
+         * @TODO
+         *
+         * If there are URLs in the tweet, they have been shortened. Thus, we'll
+         * pass the expanded URLs as entities in the API call, so that Twitter
+         * can display them when hovering the mouse on a short URL.
+         */
         $params['status'] = $status->getMessage();
 
         //have images?
@@ -141,26 +148,23 @@ class UpdateStatus implements JobActionInterface
                 } catch (\Exception $e) {
                 }
             }
-
-            if ($mediaIds) {
-                $params['media_ids'] = implode(',', $mediaIds);
-            }
         }
 
         /*
-         * @TODO
-         *
-         * If there are URLs in the tweet, they have been shortened. Thus, we'll
-         * pass the expanded URLs as entities in the API call, so that Twitter
-         * can display them when hovering the mouse on a short URL.
+         * We must use setPostField() below to avoid that Guzzle throws a
+         * "Unable to open ... for reading" error, which happens, because
+         * @ can be used in CRUL to upload a file.
          */
+        if (count($mediaIds)) {
+            $request = $connection->post('statuses/update.json')
+                ->setPostField('status', $params['status'])
+                ->setPostField('media_ids', implode(',', $mediaIds));
+        } else {
+            $request = $connection->post('statuses/update.json')
+                ->setPostField('status', $params['status']);
+        }
 
-        $request = $connection->post('statuses/update.json', null, $params);
         $response = $request->send()->json();
-
-        // TODO
-        // If status code is 403, this means that the same tweet with identical content already exists
-        // This should be checked upon creation of tweet (same with FB!)
 
         // Set URL to published status message on Facebook
         $statusURL = 'https://twitter.com/'.$response['user']['screen_name'].'/status/'.$response['id_str'];
