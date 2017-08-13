@@ -17,6 +17,7 @@
 
 namespace CampaignChain\Operation\TwitterBundle\Job;
 
+use CampaignChain\Channel\TwitterBundle\REST\TwitterClient;
 use CampaignChain\CoreBundle\Entity\ReportAnalyticsActivityFact;
 use CampaignChain\CoreBundle\Entity\SchedulerReportOperation;
 use CampaignChain\CoreBundle\Job\JobReportInterface;
@@ -71,20 +72,13 @@ class ReportUpdateStatus implements JobReportInterface
         }
 
         $client = $this->container->get('campaignchain.channel.twitter.rest.client');
+        /** @var TwitterClient $connection */
         $connection = $client->connectByActivity($this->status->getOperation()->getActivity());
 
-        $request = $connection->get('statuses/retweets/'.$this->status->getIdStr().'.json?count=1&trim_user=true');
-        $response = $request->send()->json();
+        $response = $connection->getTweetStats($this->status->getIdStr());
 
-        // If response is an empty array, this means no interaction happened yet
-        // with the Tweet.
-        if(!count($response)){
-            $retweets = 0;
-            $favorites = 0;
-        } else {
-            $retweets = $response[0]['retweeted_status']['retweet_count'];
-            $favorites = $response[0]['retweeted_status']['favorite_count'];
-        }
+        $retweets = $response['retweet_count'];
+        $favorites = $response['favorite_count'];
 
         // Add report data.
         $facts[self::METRIC_RTS] = $retweets;

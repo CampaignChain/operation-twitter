@@ -24,7 +24,6 @@ use CampaignChain\Operation\TwitterBundle\Entity\Status;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use CampaignChain\CoreBundle\Entity\Medium;
 use CampaignChain\CoreBundle\Job\JobActionInterface;
-use Guzzle\Http\Client;
 use CampaignChain\Operation\TwitterBundle\Validator\UpdateStatusValidator as Validator;
 use CampaignChain\CoreBundle\Exception\JobException;
 use CampaignChain\CoreBundle\Exception\ErrorCode;
@@ -115,7 +114,7 @@ class UpdateStatus implements JobActionInterface
             $this->cta->processCTAs($status->getMessage(), $status->getOperation(), $options)->getContent()
         );
 
-        /** @var Client $connection */
+        /** @var TwitterClient $connection */
         $connection = $this->client->connectByActivity($status->getOperation()->getActivity());
 
         /*
@@ -127,46 +126,22 @@ class UpdateStatus implements JobActionInterface
          */
         $params['status'] = $status->getMessage();
 
-        //have images?
+        // have images?
         $images = $this->em
             ->getRepository('CampaignChainHookImageBundle:Image')
             ->getImagesForOperation($status->getOperation());
 
-        $mediaIds = [];
+        $imgPaths = [];
 
         if ($images) {
             foreach ($images as $image) {
-                $streamPath = 'gaufrette://images/'.$image->getPath();
-
-                $imageRequest = $connection->post('https://upload.twitter.com/1.1/media/upload.json', null, [
-                    'media_data' => base64_encode(file_get_contents($streamPath)),
-                ]);
-
-                try {
-                    $response = $imageRequest->send()->json();
-                    $mediaIds[] = $response['media_id'];
-                } catch (\Exception $e) {
-                }
+                $imgPaths[] = 'gaufrette://images/'.$image->getPath();
             }
         }
 
-        /*
-         * We must use setPostField() below to avoid that Guzzle throws a
-         * "Unable to open ... for reading" error, which happens, because
-         * @ can be used in CRUL to upload a file.
-         */
-        if (count($mediaIds)) {
-            $request = $connection->post('statuses/update.json')
-                ->setPostField('status', $params['status'])
-                ->setPostField('media_ids', implode(',', $mediaIds));
-        } else {
-            $request = $connection->post('statuses/update.json')
-                ->setPostField('status', $params['status']);
-        }
+        $response = $connection->postStatus($params['status'], $imgPaths);
 
-        $response = $request->send()->json();
-
-        // Set URL to published status message on Facebook
+        // Set URL to published status message on Twitter
         $statusURL = 'https://twitter.com/'.$response['user']['screen_name'].'/status/'.$response['id_str'];
 
         $status->setUrl($statusURL);

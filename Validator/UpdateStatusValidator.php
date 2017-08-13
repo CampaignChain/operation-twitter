@@ -105,24 +105,12 @@ class UpdateStatusValidator extends AbstractOperationValidator
                 $since = new \DateTime();
                 $since->modify('-' . $this->maxDuplicateInterval);
 
-                try {
-                    $request = $connection->get(
-                        'search/tweets.json?q='
-                        . urlencode(
-                            'from:' . $locationTwitter->getUsername() . ' '
-                            . '"' . $content->getMessage() . '" '
-                            . 'since:' . $since->format('Y-m-d')
-                        )
-                    );
-                    $response = $request->send()->json();
-                    $matches = $response['statuses'];
-                } catch (\Exception $e) {
-                    throw new ExternalApiException(
-                        $e->getResponse()->getReasonPhrase(),
-                        $e->getResponse()->getStatusCode(),
-                        $e
-                    );
-                }
+                $response = $connection->getSameUserTweets(
+                    $locationTwitter->getUsername(),
+                    $content->getMessage(),
+                    $since
+                );
+                $matches = $response['statuses'];
 
                 /*
                  * Iterate through search matches to see if these are exact matches

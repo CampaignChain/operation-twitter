@@ -18,8 +18,7 @@
     },
     "require": {
         "campaignchain/activity-twitter": "dev-master",
-        "campaignchain/form-type-autocomplete": "dev-master",
-        "guzzle/guzzle":"~3.9"
+        "campaignchain/form-type-autocomplete": "dev-master"
     },
     "autoload": {
         "psr-4": { "CampaignChain\\Operation\\TwitterBundle\\": "" }
