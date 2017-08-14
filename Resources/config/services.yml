@@ -30,10 +30,10 @@ services:
             - "@campaignchain.validator.operation.twitter.update_status"
     campaignchain.job.report.twitter.update_status:
         class: CampaignChain\Operation\TwitterBundle\Job\ReportUpdateStatus
-        arguments: [ @doctrine, @service_container ]
+        arguments: [ '@doctrine', '@service_container' ]
     campaignchain.operation.twitter.status:
             class: CampaignChain\Operation\TwitterBundle\EntityService\Status
-            arguments: [ @doctrine ]
+            arguments: [ '@doctrine' ]
     campaignchain.validator.operation.twitter.update_status:
         class: CampaignChain\Operation\TwitterBundle\Validator\UpdateStatusValidator
         arguments:
