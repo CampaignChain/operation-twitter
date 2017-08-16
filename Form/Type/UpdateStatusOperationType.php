@@ -55,7 +55,7 @@ class UpdateStatusOperationType extends OperationType
         $resolver->setDefaults($defaults);
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'campaignchain_operation_twitter_update_status';
     }
