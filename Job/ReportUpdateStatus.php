@@ -50,6 +50,7 @@ class ReportUpdateStatus implements JobReportInterface
         $scheduler->setInterval('1 hour');
         $scheduler->setEndAction($operation->getActivity()->getCampaign());
         $this->em->persist($scheduler);
+        $this->em->flush();
 
         // Add initial data to report.
         $this->status = $this->em->getRepository('CampaignChainOperationTwitterBundle:Status')->findOneByOperation($operation);
