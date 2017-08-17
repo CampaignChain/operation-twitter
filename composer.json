@@ -17,8 +17,8 @@
         "docs": "http://doc.campaignchain.com"
     },
     "require": {
-        "campaignchain/activity-twitter": "dev-master",
-        "campaignchain/form-type-autocomplete": "dev-master"
+        "campaignchain/activity-twitter": "1.0.x-dev",
+        "campaignchain/form-type-autocomplete": "1.0.x-dev"
     },
     "autoload": {
         "psr-4": { "CampaignChain\\Operation\\TwitterBundle\\": "" }
