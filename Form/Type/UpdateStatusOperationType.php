@@ -20,7 +20,7 @@ namespace CampaignChain\Operation\TwitterBundle\Form\Type;
 use CampaignChain\AutocompleteFormTypeBundle\Form\Type\AutocompleteType;
 use CampaignChain\CoreBundle\Form\Type\OperationType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UpdateStatusOperationType extends OperationType
 {
@@ -43,7 +43,7 @@ class UpdateStatusOperationType extends OperationType
             ));
     }
 
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function configureOptions(OptionsResolver $resolver)
     {
         $defaults = array(
             'data_class' => 'CampaignChain\Operation\TwitterBundle\Entity\Status',
